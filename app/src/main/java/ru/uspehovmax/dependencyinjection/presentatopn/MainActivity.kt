@@ -1,16 +1,15 @@
 package ru.uspehovmax.dependencyinjection.presentatopn
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import ru.uspehovmax.dependencyinjection.R
+import ru.uspehovmax.dependencyinjection.data.database.ExampleDatabase
 import ru.uspehovmax.dependencyinjection.di.DaggerApplicationComponent
 import javax.inject.Inject
 import java.lang.*
 
 class MainActivity : AppCompatActivity() {
-
-    @Inject
-    lateinit var viewModel: ExampleViewModel
 
     private val timeMillis = System.currentTimeMillis()
 /*   // 1. DaggerApplicationComponent генерируется при сборке.
@@ -28,10 +27,28 @@ class MainActivity : AppCompatActivity() {
             .build()
     }*/
 
-    // 3. DaggerApplicationComponent делается через Factory. .create(application,timeMillis(timeMillis)  )
+/*    // 3. DaggerApplicationComponent делается через Factory. .create(application,timeMillis(timeMillis)  )
     private val component by lazy {
-        DaggerApplicationComponent.factory().create(application, System.currentTimeMillis())
+        DaggerApplicationComponent.factory()
+            .create(application, System.currentTimeMillis())
+    }*/
+
+    // 4. Создали ExampleApplication. Из него получаем ссылку на component
+    private val component by lazy {
+        (application as ExampleApplication).component
     }
+
+    @Inject // заменяем
+    lateinit var viewModel: ExampleViewModel
+    // получаем viewModel через инъекцию
+/*    private val viewModel: ExampleViewModel by lazy {
+        component.getViewModel()
+}*/
+
+    // получаем database через инъекцию
+/*    private val database: ExampleDatabase by lazy {
+        component.getDatabase()
+    }*/
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,9 +61,17 @@ class MainActivity : AppCompatActivity() {
 
         component.inject(this)
 
+/*        Log.d("MSG", "MainActivity ${component.getViewModel()}")
+        Log.d("MSG", "MainActivity ${component.getViewModel()}")
+        Log.d("MSG", "MainActivity ${component.getDatabase()}")
+        Log.d("MSG", "MainActivity ${component.getDatabase()}")
+        Log.d("MSG", "MainActivity ${component.getApiService()}")
+        Log.d("MSG", "MainActivity ${component.getApiService()}")*/
+
         // Для инициализации viewModel используется Dagger через
         // инъекцию конструктора viewModel @Inject
         viewModel.method()
+//        database.method()
 
 
     }
