@@ -9,7 +9,6 @@ import ru.uspehovmax.dependencyinjection.data.datasource.ExampleLocalDataSourceI
 import ru.uspehovmax.dependencyinjection.data.datasource.ExampleRemoteDataSource
 import ru.uspehovmax.dependencyinjection.data.datasource.ExampleRemoteDataSourceImpl
 
-/*ошибка при @Module*/
 @Module
 interface DataModule /*(private val context: Context)*/ {
 
@@ -34,11 +33,11 @@ interface DataModule /*(private val context: Context)*/ {
 /*     класс DataModule и методы должен быть абстрактными или DataModule - интерфес
      Т.к. не создаётся экз.класса и не вызывает методов
      @Provides - создаёт экз.класса и вызывает методы*/
-    @ApplicationScope
+    @ApplicationScope // чтобы сделать ExampleLocalDataSourceImpl синглтоном, его зависимости в конструкторе тоже в одном экз.
     @Binds
     fun bindLocalDataSource(impl: ExampleLocalDataSourceImpl): ExampleLocalDataSource
 
-    @ApplicationScope
+    @ApplicationScope // чтобы сделать ExampleRemoteDataSourceImpl синглтоном, его зависимости в конструкторе тоже в одном экз.
     @Binds
     fun bindRemoteDataSource(impl: ExampleRemoteDataSourceImpl): ExampleRemoteDataSource
 

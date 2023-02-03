@@ -7,7 +7,7 @@ import ru.uspehovmax.dependencyinjection.di.ApplicationScope
 import javax.inject.Inject
 import javax.inject.Singleton
 
-//@ApplicationScope // убрали
+//@ApplicationScope // убрали но добавили @ApplicationScope в DomainModule для репозитория
 class ExampleApiService @Inject constructor(
     private val context: Context,
     private val timeMillis: Long
@@ -19,6 +19,6 @@ class ExampleApiService @Inject constructor(
     }
 
     fun method() {
-        Log.d(LOG_MSG, "$this - $message - ${context.getString(R.string.app_name)} timeMillis:  ${timeMillis.toString()}")
+        Log.d(LOG_MSG, "$message - ${context.getString(R.string.app_name)} - $this ") /*timeMillis:  ${timeMillis.toString()}*/
     }
 }

@@ -11,15 +11,17 @@ import ru.uspehovmax.dependencyinjection.domain.ExampleRepository
 interface DomainModule {
 
     // 1 вариант
-//    @Provides
-//    fun provideRepository(impl: ExampleRepositoryImpl): ExampleRepository {
-//        return impl
-//    }
+/*    @Provides
+    fun provideRepository(impl: ExampleRepositoryImpl): ExampleRepository {
+        return impl
+    }*/
 
     // 2 вариант. @Binds - Предпочтителен. меньше кода, скорость сбокри выше
-    // класс DataModule и методы должен быть абстрактными или DataModule - интерфес
-    // Т.к. не создаётся экз.класса и не вызывает методов
-    // @Provides - создаёт экз.класса и вызывает методы
+/*     класс DataModule и методы должен быть абстрактными или DataModule - интерфес
+     Т.к. не создаётся экз.класса и не вызывает методов
+     @Provides - создаёт экз.класса и вызывает методы*/
+
+    //@ApplicationScope  // чтобы сделать ExampleRepositoryImpl синглтоном, его зависимости в конструкторе тоже в одном экз.
     @Binds
     fun bindRepository(impl: ExampleRepositoryImpl): ExampleRepository
 

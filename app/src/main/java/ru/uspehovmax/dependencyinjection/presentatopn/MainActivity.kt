@@ -1,11 +1,11 @@
 package ru.uspehovmax.dependencyinjection.presentatopn
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import ru.uspehovmax.dependencyinjection.R
-import ru.uspehovmax.dependencyinjection.data.database.ExampleDatabase
-import ru.uspehovmax.dependencyinjection.di.DaggerApplicationComponent
 import javax.inject.Inject
 import java.lang.*
 
@@ -38,10 +38,21 @@ class MainActivity : AppCompatActivity() {
         (application as ExampleApplication).component
     }
 
-    @Inject // заменяем
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+
+    private val viewModel by lazy {
+        ViewModelProvider(this, viewModelFactory)[ExampleViewModel::class.java]
+    }
+
+    private val viewModel2 by lazy {
+        ViewModelProvider(this, viewModelFactory)[ExampleViewModel2::class.java]
+    }
+
+/*     @Inject // заменяем viewModelFactory
     lateinit var viewModel: ExampleViewModel
     // получаем viewModel через инъекцию
-/*    private val viewModel: ExampleViewModel by lazy {
+   private val viewModel: ExampleViewModel by lazy {
         component.getViewModel()
 }*/
 
@@ -51,6 +62,8 @@ class MainActivity : AppCompatActivity() {
     }*/
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        component.inject(this)
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         /* нет инициализации  - краш.
@@ -58,8 +71,6 @@ class MainActivity : AppCompatActivity() {
         Для инъекции вставляем аннотацию @Inject constructor() перед всеми классами
         ExampleDatabase, ExampleLocalDataSourceImpl ...
          */
-
-        component.inject(this)
 
 /*        Log.d("MSG", "MainActivity ${component.getViewModel()}")
         Log.d("MSG", "MainActivity ${component.getViewModel()}")
@@ -71,7 +82,14 @@ class MainActivity : AppCompatActivity() {
         // Для инициализации viewModel используется Dagger через
         // инъекцию конструктора viewModel @Inject
         viewModel.method()
-//        database.method()
+        viewModel2.method()
+
+        findViewById<TextView>(R.id.tv_hello).setOnClickListener {
+            Intent (this, MainActivity2::class.java).apply {
+                startActivity(this)
+            }
+        }
+
 
 
     }
